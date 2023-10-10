@@ -50,9 +50,41 @@ router.post("/:cid/products/:pid", async (req, res) => {
                     existingProduct.quantity += quantity || 1;
                 } else {
 
-                    cart.products.push({ id: pid, quantity: quantity || 1 });
+                    cart.products.push({ product: pid, quantity: quantity || 1 });
                 }
         }
+
+     }
+
+
+    const result = await cartsManager.update(cid, { products: cart.products });
+    console.log(result)
+    res.status(201).send({status: 'sucess', payload: result}); 
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'ERROR AL AGREGAR EL PRODUCTO' });
+    }
+});
+
+
+router.put("/:cid/products/:pid", async (req, res) => {
+    try {
+        const cid = req.params.cid;
+        const pid = req.params.pid;
+        const { quantity } = req.body;
+
+        const cart = await cartsManager.getArray(cid)
+        const product = await productsManager.getById(pid);
+
+        if(cart && product){
+
+            const existingProduct = cart.products.find(item => item.id === pid);
+            if (existingProduct) {
+
+                existingProduct.quantity += quantity || 1;
+            }
 
      }
 

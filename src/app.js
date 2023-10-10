@@ -19,14 +19,18 @@ app.use('/', viewsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/products', productsRouter);
 
-try {
-    await mongoose.connect('mongodb+srv://ericnegreidooo:NwhiTotw0VIjgLVp@cluster47300ap.yetvntr.mongodb.net/ecommerce?retryWrites=true&w=majority');
-    console.log('BDD conectada');
-} catch (error) {
-    console.log(error.menssage);
-    
-};
+const enviroment = async () => {
 
+    try {
+        await mongoose.connect('mongodb+srv://ericnegreidooo:NwhiTotw0VIjgLVp@cluster47300ap.yetvntr.mongodb.net/ecommerce?retryWrites=true&w=majority');
+        console.log('BDD conectada');
+    } catch (error) {
+        console.log(error.menssage);
+        
+    };
+}
+
+enviroment();
 
 app.listen(8080, () => console.log('server running'));
 
